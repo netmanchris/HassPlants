@@ -1,0 +1,57 @@
+{% for plant in plants %}{% if plant.sensor_model == 'Miflora' %}
+{{plant.name}}:
+    sensors:
+      moisture: sensor.plant_{{plant.sensor}}_moisture
+      temperature: sensor.plant_{{plant.sensor}}_temperature
+      conductivity: sensor.plant_{{plant.sensor}}_soil_conductivity
+      brightness: sensor.plant_{{plant.sensor}}_illuminance{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
+    min_moisture: {{plant_type.min_moisture}}
+    max_moisture: {{plant_type.max_moisture}}
+    min_conductivity: {{plant_type.min_conductivity}}
+    max_conductivity: {{plant_type.max_conductivity}}
+    min_temperature: {{plant_type.min_temperature}}
+    max_temperature: {{plant_type.max_temperature}}
+    #min_brightness: {{plant_type.min_brightness}}
+    max_brightness: {{plant_type.max_brightness}}{% endif%}{% endfor %}
+    check_days: 3
+
+    {% endif %}{% endfor %}
+
+{% for plant in plants %}{% if plant.sensor_model == 'manual' %}
+{{plant.name}}:
+    sensors:
+      moisture: input_number.{{plant.name|lower}}_moisture
+      conductivity: input_number.{{plant.name|lower}}_soil_conductivity{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}
+      temperature: {{ sensor.temp_sensor }}
+      brightness: {{ sensor.lux_sensor }} {% endif %}{% endfor %}{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
+    min_moisture: {{plant_type.min_moisture}}
+    max_moisture: {{plant_type.max_moisture}}
+    min_conductivity: {{plant_type.min_conductivity}}
+    max_conductivity: {{plant_type.max_conductivity}}
+    min_temperature: {{plant_type.min_temperature}}
+    max_temperature: {{plant_type.max_temperature}}
+    #min_brightness: {{plant_type.min_brightness}}
+    max_brightness: {{plant_type.max_brightness}}{% endif%}{% endfor %}
+    check_days: 3
+
+    {% endif %}{% endfor %}
+
+{% for plant in plants %}{% if plant.sensor_model == 'LilyGo' %}
+{{plant.name}}:
+    sensors:
+      moisture: sensor.{{plant.sensor}}_soil
+      temperature: sensor.{{plant.sensor}}_temperature
+      battery: sensor.{{plant.sensor}}_battery{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}
+      brightness: {{ sensor.lux_sensor }} {% endif %}{% endfor %}{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
+    min_moisture: {{plant_type.min_moisture}}
+    max_moisture: {{plant_type.max_moisture}}
+    min_conductivity: {{plant_type.min_conductivity}}
+    max_conductivity: {{plant_type.max_conductivity}}
+    min_temperature: {{plant_type.min_temperature}}
+    max_temperature: {{plant_type.max_temperature}}
+    #min_brightness: {{plant_type.min_brightness}}
+    max_brightness: {{plant_type.max_brightness}}{% endif%}{% endfor %}
+    check_days: 3
+
+    {% endif %}{% endfor %}
+
