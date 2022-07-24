@@ -1,0 +1,18 @@
+{% for plant in plants %}{% if plant.sensor_model == 'manual' %}
+{{plant.name|lower}}_soil_conductivity:
+    name: {{plant.name|lower}}_soil_conductivity
+    min: 0
+    max: 5000
+    step: 1
+    mode: box
+    unit_of_measurement: µS/cm
+
+{{plant.name|lower}}_moisture:
+    name: {{plant.name|lower}}_moisture
+    min: 0
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: '%'
+
+{% endif %} {% endfor %}
