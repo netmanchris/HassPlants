@@ -1,0 +1,11 @@
+﻿plant,species,min_moisture,max_moisture,min_conductivity,max_conductivity,min_temperature,max_temperature,min_brightness,max_brightness,check_days
+snake,snake,7,50,300,1000,7,32,1500,60000,3
+porthos,porthos,15,60,350,2000,10,32,500,12000,3
+dracaena,dracaena,15,60,200,1500,10,35,2000,50000,3
+fern,fern,15,60,350,1500,10,32,300,4000,3
+spider,spider,15,60,200,1300,10,32,500,30000,3
+parlor_palm,parlor_palm,15,60,350,2000,10,32,800,22000,3
+chinese_evergreen,chinese_evergreen,15,60,350,2000,10,32,1500,6000,3
+peace_lily,peace_lily,15,65,350,2000,15,32,1000,22500,3
+lipstick,lipstick,15,60,350,2000,10,32,1800,20000,3
+aloe_vera,aloe_vera,7,50,300,1000,7,35,3500,75000,3

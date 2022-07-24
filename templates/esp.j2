@@ -1,0 +1,20 @@
+{% for row in plants|batch(13) %}
+
+esp32_ble_tracker:
+
+sensor:
+{% for plant in row %}
+  - platform: xiaomi_hhccjcy01
+    mac_address: "{{plant.sensor_mac}}"
+    temperature:
+      name: "plant_{{plant.sensor}}_temperature"
+    moisture:
+      name: "plant_{{plant.sensor}}_moisture"
+    illuminance:
+      name: "plant_{{plant.sensor}}_illuminance"
+    conductivity:
+      name: "plant_{{plant.sensor}}_soil_conductivity"
+    battery_level:
+      name: "plant_{{plant.sensor}}_battery_level"
+
+{% endfor %}{% endfor %}
