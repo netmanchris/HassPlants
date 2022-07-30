@@ -1,0 +1,64 @@
+{% for zone in rooms %}
+
+
+plant_{{zone.room}}_zone_{{zone.zone}}_light_flash:
+    alias: plant {{zone.room}} zone {{zone.zone}} light_flash
+    sequence:
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - entity_id: {{ zone.light }}
+        service: light.toggle
+    mode: single
+
+    {% endfor %}

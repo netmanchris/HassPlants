@@ -14,5 +14,13 @@
     step: 1
     mode: box
     unit_of_measurement: '%'
+{% endif %}{% if plant.sensor_model == 'LilyGo' %}
 
-{% endif %} {% endfor %}
+{{plant.name|lower}}_soil_conductivity:
+    name: {{plant.name|lower}}_soil_conductivity
+    min: 0
+    max: 5000
+    step: 1
+    mode: box
+    unit_of_measurement: µS/cm{% endif %}
+{% endfor %}

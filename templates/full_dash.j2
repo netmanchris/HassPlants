@@ -1,0 +1,153 @@
+square: false
+columns: 1
+type: grid
+cards:
+  - type: picture-elements
+    elements:{% for plant in plants %}
+      - type: state-icon
+        state_color: true
+        entity: plant.{{plant.name|lower}}
+        tap_action:
+              action: more-info
+        double_tap_action:
+          action: call-service
+          confirmation:
+            text: Flash Lights for {{plant.name}}?
+          service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
+        title: {{plant.name}}
+        style:
+          top: {{plant.top}}%
+          left: {{plant.left}}%
+          transform: null
+          '--paper-item-icon-color': green{% endfor %}
+    image: >-
+      https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{room_name}}_all.jpg
+  - type: horizontal-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: entity-filter
+            name: {{room_name}} Plants
+            entities:{% for plant in plants %}
+              - entity: plant.{{plant.name|lower}}
+                image: https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg
+                tap_action:
+                  action: more-info
+                double_tap_action:
+                  action: call-service
+                  confirmation:
+                    text: Flash Lights for {{plant.name}}?
+                  service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
+                hold_action:
+                  action: url
+                  confirmation:
+                    text: Show Picture of {{plant.name}}?
+                  url_path: >-
+                    https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg{% endfor %}
+            state_filter:
+              - operator: regex
+                value: moisture low|conductivity low
+                attribute: problem
+            card:
+              type: entities
+              title: {{room_name}} Plants
+          - type: custom:mini-graph-card
+            entities:{% for plant in plants %}
+              - entity: {% if plant.sensor_model == 'Miflora' %}sensor.plant_{{plant.sensor}}_moisture{% endif %}{% if plant.sensor_model == 'manual' %}input_number.{{plant.name|lower}}_moisture{% endif %}{% if plant.sensor_model == 'LilyGo' %}sensor.{{plant.sensor}}_soil{% endif %}
+                name: {{plant.name|lower}}{% endfor %}
+            hours_to_show: 168
+            color_thresholds:
+              - value: 40
+                color: '#00FF00'
+              - value: 20
+                color: '#d35400'
+              - value: 10
+                color: '#c0392b'
+              - value: 70
+                color: '#d35400'
+              - value: 90
+                color: '#c0392b'
+            name: {{room_name}} Plants Moisture
+          - type: custom:mini-graph-card
+            entities:{% for plant in plants %}{% if plant.sensor_model == 'Miflora' %}
+              - entity: sensor.plant_{{plant.sensor}}_soil_conductivity
+                name: {{plant.name}}{% endif %}{% if plant.sensor_model == 'manual' %}
+              - entity: input_number.{{plant.name|lower}}_soil_conductivity{% endif %}{% endfor %}
+            hours_to_show: 168
+            color_thresholds:
+              - value: 500
+                color: '#00FF00'
+              - value: 300
+                color: '#d35400'
+              - value: 100
+                color: '#c0392b'
+              - value: 800
+                color: '#d35400'
+              - value: 1500
+                color: '#c0392b'
+            name: {{room_name}} Plants Fertilizer
+
+
+{% for row in plants|batch(2) %}
+  - type: horizontal-stack
+    cards:{% for plant in  row %}
+      - type: horizontal-stack
+        cards:
+          - show_state: false
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            entity: plant.{{plant.name|lower}}
+            image: >-
+              https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg
+            name: {{plant.name}}
+            tap_action:
+              action: call-service
+              service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
+              data: {}
+              target: {}
+          - type: plant-status
+            entity: plant.{{plant.name|lower}}
+            name: {{plant.name}}
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: {% if plant.sensor_model == 'Miflora' %}sensor.plant_{{plant.sensor}}_moisture{% endif %}{% if plant.sensor_model == 'manual' %}input_number.{{plant.name|lower}}_moisture{% endif %}{% if plant.sensor_model == 'LilyGo' %}sensor.{{plant.sensor}}_soil{% endif %}
+                    name: {{plant.name}}
+                hours_to_show: 168
+                color_thresholds:
+                  - value: 40
+                    color: '#00FF00'
+                  - value: 20
+                    color: '#d35400'
+                  - value: 10
+                    color: '#c0392b'
+                  - value: 70
+                    color: '#d35400'
+                  - value: 90
+                    color: '#c0392b'
+                name: {{plant.name}} Moisture
+              - type: custom:mini-graph-card
+                entities:{% if plant.sensor_model == 'Miflora' %}
+                  - entity: sensor.plant_{{plant.sensor}}_soil_conductivity
+                    name: {{plant.name}}{% endif %}{% if plant.sensor_model == 'manual' %}
+                  - entity: input_number.{{plant.name|lower}}_soil_conductivity
+                    name: {{ plant.name}}{% endif %}{% if plant.sensor_model == 'LilyGo' %}
+                  - entity: input_number.{{plant.name|lower}}_soil_conductivity
+                    name: {{ plant.name}}{% endif %}
+                hours_to_show: 168
+                color_thresholds:
+                  - value: 200
+                    color: '#DC143C'
+                  - value: 395
+                    color: '#d35400'
+                  - value: 850
+                    color: '#00FF00'
+                  - value: 1305
+                    color: '#d35400'
+                  - value: 1500
+                    color: '#DC143C'
+                name: {{plant.name}} Fertilization {% endfor %}{% endfor %}
+
+
