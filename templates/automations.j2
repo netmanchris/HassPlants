@@ -34,7 +34,7 @@
       action: plant_{{plant.room}}_zone_{{plant.zone|int}}
   condition: []
   action:
-  - service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_flash
+  - service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
     data: {}
   mode: single
 

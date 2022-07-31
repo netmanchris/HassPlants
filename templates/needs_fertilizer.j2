@@ -1,0 +1,54 @@
+square: false
+columns: 1
+type: grid
+cards:
+  - type: vertical-stack
+    cards:{% for row in rooms|batch(3) %}
+      - type: horizontal-stack
+        cards:{% for room   in row %}{% if room is string %}
+          - type: entity-filter
+            name: {{room}} Plants
+            entities:{% for plant in plants %}{% if plant.room == room %}
+              - entity: plant.{{plant.name|lower}}
+                image: https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg
+                tap_action:
+                  action: more-info
+                double_tap_action:
+                  action: call-service
+                  confirmation:
+                    text: Flash Lights for {{plant.name}}?
+                  service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
+                hold_action:
+                  action: url
+                  confirmation:
+                    text: Show Picture of {{plant.name}}?
+                  url_path: >-
+                    https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg
+              {% endif %}{% endfor %}
+            state_filter:
+              - operator: regex
+                value: conductivity low
+                attribute: problem
+            card:
+              type: entities
+              title: {{room}} Plants{% endif %}{% endfor %}{% endfor %}
+      - type: horizontal-stack
+        cards:
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: toggle
+            entity: script.cast_ho_main_dash
+            icon: mdi:office-building
+            name: Home Office
+            icon_height: 50px
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: toggle
+            entity: script.cast_lr_main_dash
+            icon: mdi:theater
+            name: Living Room
+            icon_height: 50px

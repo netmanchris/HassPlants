@@ -88,7 +88,7 @@ cards:
             name: {{room_name}} Plants Fertilizer
 
 
-{% for row in plants|batch(2) %}
+{% for row in plants|batch(6) %}
   - type: horizontal-stack
     cards:{% for plant in  row %}
       - type: horizontal-stack
