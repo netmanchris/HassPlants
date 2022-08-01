@@ -1,7 +1,7 @@
 {% for plant in plants %}
 
-- id: auto_{{plant.name|lower}}_notify
-  alias: auto notify for {{plant.name|lower}}
+- id: auto_{{plant.name|lower}}_notify_moisture
+  alias: auto notify for {{plant.name|lower}} moisture
   description: ''
   trigger:
   - platform: time
@@ -13,10 +13,6 @@
       entity_id: plant.{{plant.name|lower}}
       attribute: problem
       state: moisture low
-    - condition: state
-      entity_id: plant.{{plant.name|lower}}
-      attribute: problem
-      state: conductivity low
     - condition: state
       entity_id: plant.{{plant.name|lower}}
       attribute: problem
@@ -38,6 +34,7 @@
       title: {{ plant.name }}
   mode: parallel
   max: 100
+
 - id: auto_plant_{{plant.name|lower}}_flash
   alias: {{plant.name}} flash lights
   description: ''
@@ -51,5 +48,46 @@
   - service: script.plant_{{plant.room}}_zone_{{plant.zone|int}}_light_flash
     data: {}
   mode: single
+
+
+- id: auto_{{plant.name|lower}}_notify_fertilizer
+  alias: auto notify for {{plant.name|lower}} fertilizer
+  description: ''
+  trigger:
+  - platform: time
+    at: '12:00:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: plant.{{plant.name|lower}}
+      attribute: problem
+      state: conductivity low
+    - condition: state
+      entity_id: plant.{{plant.name|lower}}
+      attribute: problem
+      state: moisture low, conductivity low
+  - condition: time
+    before: '23:59:00'
+    weekday:
+    - sat
+    - sun
+  action:
+  - service: notify.mobile_app_cyoungiphone13
+    data:
+      data:
+        actions:
+          - action: URI
+            title: Open Plants
+            uri: /lovelace/living-room/1
+          - title: Flash Lights
+            action: plant_{{plant.room|lower}}_zone_{{plant.zone|int}}
+        image: >-
+          https://ayglbnl4dz7z45ewsdun5rbx6b3dba2m.ui.nabu.casa/local/plants/{{plant.name}}.jpg
+        subtitle: "💧 {{plant.name}} needs attention"
+      message: '{% raw %}{{{% endraw %} state_attr("plant.{{plant.name|lower}}", "problem") {% raw %}}}{% endraw %}'
+      title: {{ plant.name }}
+  mode: parallel
+  max: 100
 
 {% endfor %}
