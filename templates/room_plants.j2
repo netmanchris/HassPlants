@@ -21,9 +21,9 @@
 {{plant.name}}:
     sensors:
       moisture: input_number.{{plant.name|lower}}_moisture
-      conductivity: input_number.{{plant.name|lower}}_soil_conductivity{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}
+      conductivity: input_number.{{plant.name|lower}}_soil_conductivity{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}{% if sensor.zone == plant.zone %}
       temperature: {{ sensor.temp_sensor }}
-      brightness: {{ sensor.lux_sensor }} {% endif %}{% endfor %}{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
+      brightness: {{ sensor.lux_sensor }} {% endif %}{% endif %}{% endfor %}{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
     min_moisture: {{plant_type.min_moisture}}
     max_moisture: {{plant_type.max_moisture}}
     min_conductivity: {{plant_type.min_conductivity}}
@@ -42,7 +42,7 @@
       moisture: sensor.{{plant.sensor}}_soil
       temperature: sensor.{{plant.sensor}}_temperature
       conductivity: input_number.{{plant.name|lower}}_soil_conductivity
-      battery: sensor.{{plant.sensor}}_battery{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}{% if plant.zone == sensor.zone %}
+      battery: sensor.{{plant.sensor}}_battery{% for sensor in manual_sensors %}{% if sensor.room == plant.room %}{% if sensor.zone == plant.zone %}
       brightness: {{ sensor.lux_sensor }} {% endif %}{% endif %}{% endfor %}{% for plant_type in plant_types%}{% if plant.plant_type == plant_type.species%}
     min_moisture: {{plant_type.min_moisture}}
     max_moisture: {{plant_type.max_moisture}}
